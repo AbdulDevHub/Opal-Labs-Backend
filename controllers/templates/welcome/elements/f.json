@@ -1,0 +1,14 @@
+{
+	"id": 0,
+	"user_id": 0,
+	"page_id": 0,
+	"element_uuid": "0",
+	"type": "Callout",
+	"content": {
+		"text": "<-- This one right here!"
+	},
+	"etc": {
+		"text": "💡"
+	},
+	"size": null
+}

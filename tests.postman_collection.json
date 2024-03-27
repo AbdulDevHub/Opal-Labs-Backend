@@ -1,0 +1,783 @@
+{
+	"info": {
+		"_postman_id": "dc230497-566b-4285-9688-776152c4b1c9",
+		"name": "tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32573022"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8000/page-get Success",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Verify the presence and type of 'elements' property\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.have.property('elements');",
+							"    pm.expect(responseData.elements).to.satisfy((value) => {",
+							"        return value === null || Array.isArray(value);",
+							"    }, \"'elements' property should be either null or an array\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n        \"page_uuid\" : \"page12342212\",\r\n        \"page_name\" : \"soemtx\",\r\n        \"parent_page_uuid\" : \"page001\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/page-get",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"page-get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/page-get Fail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Verify the presence and type of 'elements' property\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.have.property('elements');",
+							"    pm.expect(responseData.elements).to.satisfy((value) => {",
+							"        return value === null || Array.isArray(value);",
+							"    }, \"'elements' property should be either null or an array\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n        \"page_uuid\" : \"page12342212\",\r\n        \"page_name\" : \"soemtx\",\r\n        \"parent_page_uuid\" : \"page001\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/page-get",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"page-get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/page-create Success",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Response body is null\", function () {\r",
+							"    const responseData = xml2Json(pm.response.text());\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.null;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is within acceptable range\", function () {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"page_uuid\" : \"page12342212\",\r\n        \"page_name\" : \"soemtx\",\r\n        \"parent_page_uuid\" : \"page001\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/page-create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"page-create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/page-create Fail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Response body is null\", function () {\r",
+							"    const responseData = xml2Json(pm.response.text());\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.null;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is within acceptable range\", function () {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"page_uuid\" : \"page12342212\",\r\n        \"page_name\" : \"soemtx\",\r\n        \"parent_page_uuid\" : \"page001\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/page-create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"page-create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/user-login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response has the required Content-Type header\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response body is empty\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"  pm.expect(responseData).to.be.empty;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Verify response does not contain sensitive information\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.not.have.property('password');\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"access_token\": \"Enter Access Token Here\", \r\n  \"id_token\": \"Enter id Token Here\", \r\n  \"expires_in\": \"Enter expires in here:\", \r\n  \"token_type\": \"Bearer\", \r\n  \"scope\": \"openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email\", \r\n  \"refresh_token\": \"Enter Refresh Token Here\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/user-login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"user-login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/user-get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response has the required fields\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"\r",
+							"  pm.expect(responseData).to.be.an('object');\r",
+							"  pm.expect(responseData).to.have.property('email');\r",
+							"  pm.expect(responseData).to.have.property('google_id');\r",
+							"  pm.expect(responseData).to.have.property('id');\r",
+							"  pm.expect(responseData).to.have.property('name');\r",
+							"  pm.expect(responseData).to.have.property('picture');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Email is a non-empty string\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"  pm.expect(responseData).to.be.an('object');\r",
+							"  pm.expect(responseData.email).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Email should not be empty\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Google_id is a non-empty string\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"  pm.expect(responseData).to.be.an('object');\r",
+							"  pm.expect(responseData.google_id).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Id is a non-negative integer\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.id).to.be.a('number');\r",
+							"    pm.expect(responseData.id).to.be.at.least(0);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/user-get",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"user-get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/page-list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Content-Type header is application/json\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Page name must be a non-empty string\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.pages).to.be.an('array');\r",
+							"    \r",
+							"    responseData.pages.forEach(function(page) {\r",
+							"        pm.expect(page.page_name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Page name should not be empty\");\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/page-list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"page-list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/page-update Success",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response has the expected content type of application/json\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response body should be an empty object\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData).to.eql({});\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is within acceptable range\", function () {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(300);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"page\": {\r\n        \"page_uuid\" : \"page12342212\",\r\n        \"page_name\" : \"my new name again!\",\r\n        \"is_root\" : true,\r\n        \"element_positions\" : [\"One\", \"two\", \"three\", \"four\"],\r\n        \"public_page\" : true\r\n    },\r\n    \"elements\" : [\r\n        {\r\n            \"element_uuid\" : \"element3\",\r\n            \"type\" : \"h1\",\r\n            \"content\" : { \"text\" : \"content2 new\"},\r\n            \"etc\": {\"color\": \"red\", \"bold\": true}\r\n        },\r\n        {\r\n            \"element_uuid\" : \"element4\",\r\n            \"type\" : \"h1\",\r\n            \"content\" : { \"text\" : \"content2 new\"},\r\n            \"etc\": {\"color\": \"red\", \"bold\": true}\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/page-update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"page-update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/page-update Fail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response has the expected content type of application/json\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response body should be an empty object\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData).to.eql({});\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is within acceptable range\", function () {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(300);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"page\": {\r\n        \"page_uuid\" : \"page12342212\",\r\n        \"page_name\" : \"my new name again!\",\r\n        \"is_root\" : true,\r\n        \"element_positions\" : [\"One\", \"two\", \"three\", \"four\"],\r\n        \"public_page\" : true\r\n    },\r\n    \"elements\" : [\r\n        {\r\n            \"element_uuid\" : \"element3\",\r\n            \"type\" : \"h1\",\r\n            \"content\" : { \"text\" : \"content2 new\"},\r\n            \"etc\": {\"color\": \"red\", \"bold\": true}\r\n        },\r\n        {\r\n            \"element_uuid\" : \"element4\",\r\n            \"type\" : \"h1\",\r\n            \"content\" : { \"text\" : \"content2 new\"},\r\n            \"etc\": {\"color\": \"red\", \"bold\": true}\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/page-update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"page-update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/page-delete Success",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"  pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response has the expected Content-Type header\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response body is an empty object\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"  pm.expect(responseData).to.be.an('object').that.is.empty;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response body is a valid JSON\", function () {\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"page_uuid\" : \"page12342212\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/page-delete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"page-delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/page-delete Fail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"  pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response has the expected Content-Type header\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response body is an empty object\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"  pm.expect(responseData).to.be.an('object').that.is.empty;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response body is a valid JSON\", function () {\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"page_uuid\" : \"page12342212\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/page-delete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"page-delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/user-logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response has the correct Content-Type header\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body is a valid JSON object\", function () {\r",
+							"    pm.expect(pm.response.json()).to.be.an('object');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Verify response does not contain sensitive user information\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.not.have.any.keys('password', 'creditCardNumber', 'ssn', 'dob');\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/user-logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"user-logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

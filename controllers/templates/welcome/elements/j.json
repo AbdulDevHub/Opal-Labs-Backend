@@ -1,0 +1,14 @@
+{
+	"id": 0,
+	"user_id": 0,
+	"page_id": 0,
+	"element_uuid": "0",
+	"type": "Code Block",
+	"content": {
+		"text": "const opalescence =\"awesome!\""
+	},
+	"etc": {
+		"text": "theme: github; language: javascript"
+	},
+	"size": null
+}

@@ -1,0 +1,17 @@
+{
+	"id": 0,
+	"user_id": 0,
+	"page_uuid": "0",
+	"page_name": "Welcome!",
+	"is_root": true,
+	"element_positions": [],
+	"parent_page_uuid": null,
+	"public_page": false,
+	"page_uuid_url": null,
+	"is_favourite": false,
+	"etc": null,
+	"view_count": 0,
+	"date_view_count": {
+		"2000-01-01" : 0
+	}
+}
