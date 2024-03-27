@@ -1,4 +1,4 @@
-# backend
+# Opal Labs [Backend]
 
 ## Setup
 
