@@ -1,4 +1,8 @@
-# backend
+# Opal Labs [Backend]
+
+## Introduction
+
+This is a public copy of a private repository in which I am currently working with a team of 7 people to create a Notion-like productivity website. The project is built using Next.js, TypeScript, Google OAuth, the Agile Model, PostgreSQL, Redis, Playwright, and Go. NOTE: This repository is the backend section of the site, to view the frontend, go to [this repository link](https://github.com/AbdulDevHub/Opal-Labs-Frontend).
 
 ## Setup
 
@@ -89,3 +93,12 @@ Follow the instructions outlined in _Setting up Google OAuth 2.0_ (located in th
 - Send requests as usual except replace "localhost:8000" with "https://backend-h3ks.onrender.com" example:
 "https://backend-h3ks.onrender.com/page-get/123"
 
+## Contributing
+
+Contributions are welcome! If you have suggestions for improvements, please open an issue.
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+<br>
