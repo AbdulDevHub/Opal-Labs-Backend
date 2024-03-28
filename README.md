@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a public copy of a private repository in which I am currently working with a team of 7 people to create a Notion-like productivity website. The project is built using Next.js, TypeScript, Google OAuth, the Agile Model, PostgreSQL, Redis, Playwright, and Go. NOTE: This repository is the frontend section of the site, to view the backend, go to [this repository link](https://github.com/AbdulDevHub/Opal-Labs-Frontend).
+This is a public copy of a private repository in which I am currently working with a team of 7 people to create a Notion-like productivity website. The project is built using Next.js, TypeScript, Google OAuth, the Agile Model, PostgreSQL, Redis, Playwright, and Go. NOTE: This repository is the backend section of the site, to view the frontend, go to [this repository link](https://github.com/AbdulDevHub/Opal-Labs-Frontend).
 
 ## Setup
 
