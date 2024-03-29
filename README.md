@@ -10,7 +10,7 @@ This is a public copy of a private repository in which I am currently working wi
 
 `.env.example` contains a template for your own setup. Make a copy of it with `cp .env.example .env`. 
 
-### CompileDaemon installation
+### Compile Daemon Installation
 
 Follow the instalation below to enable Hot-reload for development.
 
