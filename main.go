@@ -1,8 +1,10 @@
 package main
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/opalescencelabs/backend/controllers"
+	"github.com/opalescencelabs/backend/controllers/auth"
 	"github.com/opalescencelabs/backend/initializers"
 )
 
@@ -18,7 +20,11 @@ func main() {
 	gin := gin.Default()
 
 	// Use CORS middleware
-	gin.Use(CORSMiddleware())
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{auth.GetFrontendURL()}
+	config.AllowCredentials = true
+	config.AllowHeaders = append(config.AllowHeaders, "Authorization")
+	gin.Use(cors.New(config))
 
 	gin.POST("/user-login", controllers.UserLogin)
 	gin.POST("/user-logout", controllers.UserLogout)
@@ -34,20 +40,4 @@ func main() {
 		panic("Router failed to start Gin: " + err.Error())
 	}
 
-}
-
-func CORSMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
-
-		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(204)
-			return
-		}
-
-		c.Next()
-	}
 }
