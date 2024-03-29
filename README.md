@@ -90,8 +90,8 @@ Follow the instructions outlined in _Setting up Google OAuth 2.0_ (located in th
 - Once the server is running open another terminal and change directories to tests and run "go test -v" to run all tests functions, or you can run "go test -run 'test_function_name'" to run individual test functions.
 
 ## How to tests backend Server hosted in cloud
-- Send requests as usual except replace "localhost:8000" with "https://backend-h3ks.onrender.com" example:
-"https://backend-h3ks.onrender.com/page-get/123"
+- Send requests as usual except replace "localhost:8000" with "https://opal-labs-backend-muej.onrender.com" example:
+"https://opal-labs-backend-muej.onrender.com/page-get/123"
 
 ## Contributing
 
