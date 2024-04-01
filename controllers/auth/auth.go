@@ -234,7 +234,7 @@ func AuthenticateUser(c *gin.Context) (uint, error) {
 		}
 		// Attach new tokens to browser
 		c.SetSameSite(http.SameSiteLaxMode)
-		c.SetCookie("Authorization", tokenString, expiry, "", GetDomain(), os.Getenv("APP_ENV") != "development", true)
+		c.SetCookie("Authorization1", tokenString, expiry, "", GetFrontendURL(), os.Getenv("APP_ENV") != "development", true)
 		// Update in DB
 		newTokensMade = true
 	}
