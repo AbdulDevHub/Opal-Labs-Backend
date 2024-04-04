@@ -103,7 +103,6 @@ type PageResp struct {
 type PageUpdateRequest struct {
 	Page     PageUpdateObject       `json:"page"`
 	Elements []ElementsUpdateObject `json:"elements,omitempty"`
-	// RemoveElements []string               `json:"remove_elements,omitempty"`
 }
 
 type PageUpdateObject struct {

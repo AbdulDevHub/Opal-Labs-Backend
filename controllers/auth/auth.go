@@ -19,7 +19,7 @@ import (
 // Return "localhost" if the app is in development mode otherwise return the DOMAIN env variable.
 func GetDomain() string {
 	if os.Getenv("APP_ENV") == "development" {
-		return "localhost"
+		return "http://localhost:8000"
 	}
 	return os.Getenv("DOMAIN")
 }
@@ -234,7 +234,13 @@ func AuthenticateUser(c *gin.Context) (uint, error) {
 		}
 		// Attach new tokens to browser
 		c.SetSameSite(http.SameSiteLaxMode)
-		c.SetCookie("Authorization1", tokenString, expiry, "", GetFrontendURL(), os.Getenv("APP_ENV") != "development", true)
+
+		// Trim the protocol and port from the frontend URL
+		url := strings.TrimPrefix(GetFrontendURL(), "https://")
+		url = strings.TrimPrefix(url, "http://")
+		url = strings.Split(url, ":")[0]
+
+		c.SetCookie("Authorization", tokenString, expiry, "", url, os.Getenv("APP_ENV") != "development", true)
 		// Update in DB
 		newTokensMade = true
 	}

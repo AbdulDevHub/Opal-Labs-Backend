@@ -15,6 +15,7 @@ import (
 	"github.com/opalescencelabs/backend/api"
 	"github.com/opalescencelabs/backend/api/caching"
 	"github.com/opalescencelabs/backend/controllers/auth"
+	"github.com/opalescencelabs/backend/controllers/templates"
 	"github.com/opalescencelabs/backend/database"
 	"github.com/opalescencelabs/backend/models"
 	"gorm.io/gorm"
@@ -440,8 +441,20 @@ func PageList(c *gin.Context) {
 
 	result := database.DB.Where("user_id = ? AND deleted_at IS NULL", userID).Order("is_favourite DESC, last_updated_at DESC").Find(&pages)
 	if result.Error != nil || len(pages) == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"error": "No pages found for this user"})
-		return
+		// Generate welcome page if no pages are found
+		fmt.Println("No pages found for user ", userID)
+		fmt.Println("Creating welcome page")
+		// Begin a transaction for the creation of the welcome page
+		tx := database.DB.Begin()
+		if err := templates.CreateWelcomePage(userID, tx); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create welcome page. " + err.Error()})
+			return
+		}
+		// Commit the transaction
+		if err := tx.Commit().Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create welcome page. " + err.Error()})
+			return
+		}
 	}
 
 	// Convert pages to PageResp, including unmarshalling ElementPositions
@@ -578,6 +591,8 @@ func PageUpdate(c *gin.Context) {
 		return
 	}
 
+	// If elements is not present in the request, make no changes to the elements
+
 	PageID := page.ID
 
 	elementQuery := "element_uuid = ? AND page_id = ? AND user_id = ?"
@@ -620,39 +635,42 @@ func PageUpdate(c *gin.Context) {
 		}
 	}
 
-	// Iterate over the existing element positions and delete the ones that are not present in the newElementPositions slice
-	for _, existingElementUUID := range existingElementPositions {
-		if !slices.Contains(newElementPositions, existingElementUUID) {
-			// Delete the element
-			var element models.Element
-			if err := tx.Where("element_uuid = ? AND page_id = ? AND user_id = ?", existingElementUUID, PageID, userID).First(&element).Error; err != nil {
-				fmt.Println("Element not found:", existingElementUUID, err)
-				c.JSON(http.StatusBadRequest, gin.H{"error": "delete element that doesn't exist"})
-				tx.Rollback()
-				return
-			}
-			if err := tx.Delete(&element).Error; err != nil {
-				fmt.Println("Failed to delete elements", err)
-				c.JSON(http.StatusInternalServerError, gin.H{"error": "remove elements"})
-				tx.Rollback()
-				return
+	// If elements is nill (i.e. not present in the request), do nothing to the existing elements
+	if request.Elements != nil {
+		// Iterate over the existing element positions and delete the ones that are not present in the newElementPositions slice
+		for _, existingElementUUID := range existingElementPositions {
+			if !slices.Contains(newElementPositions, existingElementUUID) {
+				// Delete the element
+				var element models.Element
+				if err := tx.Where("element_uuid = ? AND page_id = ? AND user_id = ?", existingElementUUID, PageID, userID).First(&element).Error; err != nil {
+					fmt.Println("Element not found:", existingElementUUID, err)
+					c.JSON(http.StatusBadRequest, gin.H{"error": "delete element that doesn't exist"})
+					tx.Rollback()
+					return
+				}
+				if err := tx.Delete(&element).Error; err != nil {
+					fmt.Println("Failed to delete elements", err)
+					c.JSON(http.StatusInternalServerError, gin.H{"error": "remove elements"})
+					tx.Rollback()
+					return
+				}
 			}
 		}
-	}
 
-	// Marshal the newElementPositions slice and update the page's ElementPositions
-	newElementPositionsJSON, err := json.Marshal(newElementPositions)
-	if err != nil {
-		fmt.Println("Failed to marshal new element positions", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to process page data (elementPositions)", "details": err.Error()})
-		tx.Rollback()
-		return
-	}
-	if err := tx.Model(&page).Update("element_positions", newElementPositionsJSON).Error; err != nil {
-		fmt.Println("Failed to update element positions", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "update element positions"})
-		tx.Rollback()
-		return
+		// Marshal the newElementPositions slice and update the page's ElementPositions
+		newElementPositionsJSON, err := json.Marshal(newElementPositions)
+		if err != nil {
+			fmt.Println("Failed to marshal new element positions", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to process page data (elementPositions)", "details": err.Error()})
+			tx.Rollback()
+			return
+		}
+		if err := tx.Model(&page).Update("element_positions", newElementPositionsJSON).Error; err != nil {
+			fmt.Println("Failed to update element positions", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "update element positions"})
+			tx.Rollback()
+			return
+		}
 	}
 
 	// Commit the transaction

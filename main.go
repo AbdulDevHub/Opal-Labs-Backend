@@ -17,26 +17,26 @@ func init() {
 
 // Start application
 func main() {
-	gin := gin.Default()
+	r := gin.Default()
 
 	// Use CORS middleware
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{auth.GetFrontendURL()}
+	config.AllowOrigins = []string{auth.GetFrontendURL(), auth.GetDomain()}
 	config.AllowCredentials = true
 	config.AllowHeaders = append(config.AllowHeaders, "Authorization")
-	gin.Use(cors.New(config))
+	r.Use(cors.New(config))
 
-	gin.POST("/user-login", controllers.UserLogin)
-	gin.POST("/user-logout", controllers.UserLogout)
-	gin.GET("/user-get", controllers.UserGet)
+	r.POST("/user-login", controllers.UserLogin)
+	r.POST("/user-logout", controllers.UserLogout)
+	r.GET("/user-get", controllers.UserGet)
 
-	gin.POST("/page-create", controllers.PageCreate)
-	gin.POST("/page-update", controllers.PageUpdate)
-	gin.GET("/page-get/:page_uuid", controllers.PageGet)
-	gin.GET("/page-list", controllers.PageList)
-	gin.POST("/page-delete", controllers.PageDelete)
+	r.POST("/page-create", controllers.PageCreate)
+	r.POST("/page-update", controllers.PageUpdate)
+	r.GET("/page-get/:page_uuid", controllers.PageGet)
+	r.GET("/page-list", controllers.PageList)
+	r.POST("/page-delete", controllers.PageDelete)
 
-	if err := gin.Run(); err != nil {
+	if err := r.Run(); err != nil {
 		panic("Router failed to start Gin: " + err.Error())
 	}
 

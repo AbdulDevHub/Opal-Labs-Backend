@@ -11,7 +11,5 @@
 	"is_favourite": false,
 	"etc": null,
 	"view_count": 0,
-	"date_view_count": {
-		"2000-01-01" : 0
-	}
+	"date_view_count": {}
 }

@@ -48,5 +48,5 @@ type User struct {
 	Name        string `gorm:"not null"`
 	Picture     string `gorm:"not null"`
 	Credentials []byte `gorm:"type:jsonb;default: '{}'"`
-	Status      string `gorm:"not null;default:'freemium';check:Status IN ('freemium', 'premium', 'enterprise')" json:"status"`
+	Status      string `gorm:"not null;default:'premium';check:Status IN ('freemium', 'premium', 'enterprise')" json:"status"`
 }

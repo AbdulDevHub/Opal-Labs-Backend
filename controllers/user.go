@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/opalescencelabs/backend/api"
@@ -102,8 +103,14 @@ func UserLogin(c *gin.Context) {
 	}
 
 	// Attach token to browser
-	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("Authorization", tokenString, 3600*24*30, "/", auth.GetFrontendURL(), os.Getenv("APP_ENV") != "development", true)
+	c.SetSameSite(http.SameSiteLaxMode)
+
+	// Trim the protocol and port from the frontend URL
+	url := strings.TrimPrefix(auth.GetFrontendURL(), "https://")
+	url = strings.TrimPrefix(url, "http://")
+	url = strings.Split(url, ":")[0]
+
+	c.SetCookie("Authorization", tokenString, 3600*24*30, "/", url, os.Getenv("APP_ENV") != "development", true)
 	// c.JSON(http.StatusOK, api.UserLoginResp{})
 	c.JSON(http.StatusOK, gin.H{"token": tokenString}) // TODO: Fix issue where cookie is not being set
 }
@@ -141,7 +148,13 @@ func UserLogout(c *gin.Context) {
 	}
 
 	// Delete token from browser
-	c.SetCookie("Authorization", "", -1, "/", auth.GetDomain(), os.Getenv("APP_ENV") != "development", true)
+
+	// Trim the protocol and port from the frontend URL
+	url := strings.TrimPrefix(auth.GetFrontendURL(), "https://")
+	url = strings.TrimPrefix(url, "http://")
+	url = strings.Split(url, ":")[0]
+
+	c.SetCookie("Authorization", "", -1, "/", url, os.Getenv("APP_ENV") != "development", true)
 
 	fmt.Printf("user-logout: %d\n", userID)
 	c.JSON(http.StatusOK, api.UserLogoutResp{})
