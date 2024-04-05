@@ -24,6 +24,7 @@ func main() {
 	config.AllowOrigins = []string{auth.GetFrontendURL()}
 	config.AllowCredentials = true
 	config.AllowHeaders = append(config.AllowHeaders, "Authorization")
+	config.AllowHeaders = append(config.AllowHeaders, "Access-Control-Allow-Origin")
 	r.Use(cors.New(config))
 
 	r.POST("/user-login", controllers.UserLogin)
