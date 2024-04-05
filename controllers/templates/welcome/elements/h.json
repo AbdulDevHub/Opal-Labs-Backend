@@ -3,10 +3,12 @@
 	"user_id": 0,
 	"page_id": 0,
 	"element_uuid": "0",
-	"type": "iFrame",
+	"type": "Checkbox",
 	"content": {
 		"text": ""
 	},
-	"etc": null,
+	"etc": {
+		"text": ""
+	},
 	"size": null
 }

@@ -3,10 +3,12 @@
 	"user_id": 0,
 	"page_id": 0,
 	"element_uuid": "0",
-	"type": "Paragraph",
+	"type": "Heading 3",
 	"content": {
-		"text": "Welcome to Opalescence - Flip the 'Edit' switch to start customizing your first page."
+		"text": "To Get Started, Try Writing Your Name In The Code Block"
 	},
-	"etc": null,
+	"etc": {
+		"text": "normal;  color: #000000; bold"
+	},
 	"size": null
 }

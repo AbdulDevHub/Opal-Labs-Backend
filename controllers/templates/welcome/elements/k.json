@@ -5,8 +5,10 @@
 	"element_uuid": "0",
 	"type": "Heading 3",
 	"content": {
-		"text": "These are just the basics! There's a lot more you can do with all kinds of elements!"
+		"text": "Now Try Favouriting This Page To Have Easy Access"
 	},
-	"etc": null,
+	"etc": {
+		"text": "normal;  color: #000000; bold"
+	},
 	"size": null
 }

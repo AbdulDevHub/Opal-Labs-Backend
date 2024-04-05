@@ -3,10 +3,12 @@
 	"user_id": 0,
 	"page_id": 0,
 	"element_uuid": "0",
-	"type": "Heading 2",
+	"type": "Callout",
 	"content": {
-		"text": "Welcome to Opalescence!"
+		"text": "Welcome to Opal Labs, the ultimate note taking experience!"
 	},
-	"etc": null,
+	"etc": {
+		"text": "💡"
+	},
 	"size": null
 }

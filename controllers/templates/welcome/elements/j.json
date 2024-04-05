@@ -3,12 +3,12 @@
 	"user_id": 0,
 	"page_id": 0,
 	"element_uuid": "0",
-	"type": "Code Block",
+	"type": "Checkbox",
 	"content": {
-		"text": "const opalescence =\"awesome!\""
+		"text": ""
 	},
 	"etc": {
-		"text": "theme: github; language: javascript"
+		"text": ""
 	},
 	"size": null
 }

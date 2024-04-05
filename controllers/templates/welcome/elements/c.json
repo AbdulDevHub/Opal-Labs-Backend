@@ -3,10 +3,12 @@
 	"user_id": 0,
 	"page_id": 0,
 	"element_uuid": "0",
-	"type": "Heading 3",
+	"type": "Code Block",
 	"content": {
-		"text": "To start off, try adding your name below:"
+		"text": "const YourNameHere = \"What an awesome site!\""
 	},
-	"etc": null,
+	"etc": {
+		"text": "theme: tomorrow_night_blue; language: javascript"
+	},
 	"size": null
 }

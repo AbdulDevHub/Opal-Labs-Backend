@@ -3,12 +3,12 @@
 	"user_id": 0,
 	"page_id": 0,
 	"element_uuid": "0",
-	"type": "Heading 3",
+	"type": "Checkbox",
 	"content": {
-		"text": "Why don't you change the theme on the code block"
+		"text": ""
 	},
 	"etc": {
-		"text": "normal"
+		"text": ""
 	},
 	"size": null
 }
