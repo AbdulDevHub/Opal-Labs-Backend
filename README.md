@@ -4,7 +4,7 @@
 
 ## Introduction
 
-This is a public copy of a private repository in which I am currently working with a team of 7 people to create a Notion-like productivity website. The project is built using Next.js, TypeScript, Google OAuth, the Agile Model, PostgreSQL, Redis, Playwright, and Go. NOTE: This repository is the backend section of the site, to view the frontend, go to [this repository link](https://github.com/AbdulDevHub/Opal-Labs-Frontend).
+This is a public copy of a private repository in which I am worked with a team of 7 people to create a Notion-like productivity website. The project is built using Next.js, TypeScript, Google OAuth, the Agile Model, PostgreSQL, Redis, Playwright, and Go. NOTE: This repository is the backend section of the site, to view the frontend, go to [this repository link](https://github.com/AbdulDevHub/Opal-Labs-Frontend).
 
 ## Setup
 
@@ -89,10 +89,10 @@ Follow the instructions outlined in _Setting up Google OAuth 2.0_ (located in th
 - `CompileDaemon -command="./backend"` (run with Hot-reload)
 
 ## How to tests
-- Once the server is running open another terminal and change directories to tests and run "go test -v" to run all tests functions, or you can run "go test -run 'test_function_name'" to run individual test functions.
+Once the server is running open another terminal and change directories to tests and run "go test -v" to run all tests functions, or you can run "go test -run 'test_function_name'" to run individual test functions.
 
 ## How to tests backend Server hosted in cloud
-- Send requests as usual except replace "localhost:8000" with "https://opal-labs-backend-muej.onrender.com" example:
+Send requests as usual except replace "localhost:8000" with "https://opal-labs-backend-muej.onrender.com" example:
 "https://opal-labs-backend-muej.onrender.com/page-get/123"
 
 ## Contributing
@@ -101,6 +101,6 @@ Contributions are welcome! If you have suggestions for improvements, please open
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 <br>
