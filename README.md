@@ -42,11 +42,40 @@ For the frontend implementation, visit 👉 **[Opal Labs Frontend](https://githu
 
 ### 🔐 Environment Variables
 
-The `.env.example` file contains a template for configuration.
+Create a `.env` file in the project root (a missing `.env` is fine in production, where the host injects the variables):
 
 ```bash
-cp .env.example .env
-````
+# "development" = localhost URLs + test token allowed. Leave unset in production.
+APP_ENV="development"
+PORT=8000
+
+# Must match SECRET in the frontend (signs the session token)
+SECRET="change-me"
+
+# Production only (ignored when APP_ENV=development)
+DOMAIN="https://your-backend.onrender.com"
+FRONTEND_URL="https://your-frontend.vercel.app"
+
+# Neon connection string. When set, the DB_* values are ignored.
+DATABASE_URL="postgresql://user:password@ep-xxxx.region.aws.neon.tech/neondb?sslmode=require"
+
+# Local Postgres alternative
+DB_USER="postgres"
+DB_PASSWORD="password"
+DB_NAME="Website"
+DB_HOST="localhost"
+DB_PORT=5432
+DB_SSL_MODE="disable"
+
+# Redis (optional; caching is disabled if unreachable)
+REDIS_ADDR="localhost:6379"
+REDIS_PASSWORD=""
+REDIS_DB=0
+```
+
+### 🔑 Authentication
+
+`POST /user-login` returns a signed session token (`{ "token": "..." }`) that holds the user's ID and expires in 30 days. The frontend sends it on every request as `Authorization: Bearer <token>`. A cookie is not used because the frontend and backend are hosted on different sites, and browsers don't send cookies across them.
 
 ---
 
@@ -78,27 +107,15 @@ To enable hot-reload during development, install **CompileDaemon**:
 
 ---
 
-### ☁️ ElephantSQL (Hosted Option)
+### ☁️ Neon (Hosted Option)
 
-If you prefer not to run PostgreSQL locally:
+ElephantSQL has shut down, so the hosted database is now [Neon](https://neon.tech) (free tier, wakes itself up after idling).
 
-1. Create an account:
-   👉 [https://customer.elephantsql.com/login](https://customer.elephantsql.com/login)
+1. Create a free account and a new project at 👉 [https://console.neon.tech](https://console.neon.tech)
+2. Click **Connect**, then copy the connection string (it ends in `?sslmode=require`)
+3. Set it as `DATABASE_URL` in your `.env` (and in the Render dashboard for the deployed backend)
 
-2. Click **Create New Instance**
-
-3. Select plan: **Tiny Turtle (Free)**
-
-Update the following values in your `.env` file:
-
-```bash
-DB_USER="<User & Default Database>"
-DB_PASSWORD="<Password>"
-DB_NAME="<User & Default Database>"
-DB_HOST="<Server>"
-DB_PORT=5432
-DB_SSL_MODE="disable"
-```
+Tables are created automatically on first start (GORM auto-migration).
 
 ---
 
