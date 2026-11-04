@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/opalescencelabs/backend/api"
@@ -96,23 +94,16 @@ func UserLogin(c *gin.Context) {
 		database.DB.Save(&user)
 	}
 
-	tokenString, err := auth.MakeTokenString(request.AccessToken, request.RefreshToken, request.ExpiresIn)
+	// The frontend keeps this token in its NextAuth session and sends it back as
+	// "Authorization: Bearer <token>". A cookie can't be used because the frontend
+	// and backend are hosted on different sites.
+	tokenString, err := auth.MakeTokenString(user.ID)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Attach token to browser
-	c.SetSameSite(http.SameSiteLaxMode)
-
-	// Trim the protocol and port from the frontend URL
-	url := strings.TrimPrefix(auth.GetFrontendURL(), "https://")
-	url = strings.TrimPrefix(url, "http://")
-	url = strings.Split(url, ":")[0]
-
-	c.SetCookie("Authorization", tokenString, 3600*24*30, "/", url, os.Getenv("APP_ENV") != "development", true)
-	// c.JSON(http.StatusOK, api.UserLoginResp{})
-	c.JSON(http.StatusOK, gin.H{"token": tokenString}) // TODO: Fix issue where cookie is not being set
+	c.JSON(http.StatusOK, gin.H{"token": tokenString})
 }
 
 // UserLogout is the handler for POST /user-logout.
@@ -141,20 +132,12 @@ func UserLogout(c *gin.Context) {
 		return
 	}
 
-	// Revoke tokens
-	if err := auth.RevokeAccessToken(credentials["access_token"].(string)); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "access token revocation failure"})
-		return
+	// Revoke the Google token. An already-expired token can't be revoked, which is fine.
+	if accessToken, ok := credentials["access_token"].(string); ok {
+		if err := auth.RevokeAccessToken(accessToken); err != nil {
+			fmt.Println("user-logout: google token revocation failed:", err)
+		}
 	}
-
-	// Delete token from browser
-
-	// Trim the protocol and port from the frontend URL
-	url := strings.TrimPrefix(auth.GetFrontendURL(), "https://")
-	url = strings.TrimPrefix(url, "http://")
-	url = strings.Split(url, ":")[0]
-
-	c.SetCookie("Authorization", "", -1, "/", url, os.Getenv("APP_ENV") != "development", true)
 
 	fmt.Printf("user-logout: %d\n", userID)
 	c.JSON(http.StatusOK, api.UserLogoutResp{})

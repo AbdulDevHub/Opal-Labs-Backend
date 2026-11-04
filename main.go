@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/opalescencelabs/backend/controllers"
@@ -26,6 +28,11 @@ func main() {
 	config.AllowHeaders = append(config.AllowHeaders, "Authorization")
 	config.AllowHeaders = append(config.AllowHeaders, "Access-Control-Allow-Origin")
 	r.Use(cors.New(config))
+
+	// Lets the frontend wake the server up (free hosting sleeps when idle)
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"status": "ok"})
+	})
 
 	r.POST("/user-login", controllers.UserLogin)
 	r.POST("/user-logout", controllers.UserLogout)
