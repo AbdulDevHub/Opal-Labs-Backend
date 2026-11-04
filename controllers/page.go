@@ -581,8 +581,11 @@ func PageUpdate(c *gin.Context) {
 	if pageUpdate.IsFavourite == nil {
 		pageUpdateQuery = pageUpdateQuery.Omit("is_favourite")
 	}
+	if pageUpdate.Etc.Status != pgtype.Present {
+		pageUpdateQuery = pageUpdateQuery.Omit("etc")
+	}
 	// Rest of these fields are never updated
-	pageUpdateQuery.Omit("etc", "page_uuid", "element_positions", "user_id")
+	pageUpdateQuery.Omit("page_uuid", "element_positions", "user_id")
 
 	if err := pageUpdateQuery.Updates(pageUpdate).Error; err != nil {
 		fmt.Println("Failed to update page", err)

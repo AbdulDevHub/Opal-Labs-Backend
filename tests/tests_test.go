@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
@@ -514,4 +515,46 @@ func TestUserGet(t *testing.T) {
 	defer resp.Body.Close()
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
+}
+
+// Page-level etc (icon, cover) is saved by page-update and returned by page-get
+func TestUpdatePageEtc(t *testing.T) {
+	send := func(method, path, payload string) *http.Response {
+		req, err := http.NewRequest(method, os.Getenv("DOMAIN")+path, strings.NewReader(payload))
+		if err != nil {
+			t.Fatal(err)
+		}
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", "Bearer Only_for_testing1200332")
+		resp, err := http.DefaultClient.Do(req)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return resp
+	}
+
+	send("POST", "/page-create", `{"page_uuid":"12234PageEtctest","page_name":"PageEtctest","is_root":true}`).Body.Close()
+	defer send("POST", "/page-delete", `{"page_uuid":"12234PageEtctest"}`).Body.Close()
+
+	resp := send("POST", "/page-update", `{"page":{"page_uuid":"12234PageEtctest","etc":{"icon":"🚀","cover":"aurora"}}}`)
+	resp.Body.Close()
+	assert.Equal(t, http.StatusOK, resp.StatusCode)
+
+	// An update without etc keeps the saved value
+	send("POST", "/page-update", `{"page":{"page_uuid":"12234PageEtctest","page_name":"Renamed"}}`).Body.Close()
+
+	resp = send("GET", "/page-get/12234PageEtctest", "")
+	defer resp.Body.Close()
+	var got struct {
+		Page struct {
+			PageName string                 `json:"page_name"`
+			Etc      map[string]interface{} `json:"etc"`
+		} `json:"page"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&got); err != nil {
+		t.Fatal(err)
+	}
+	assert.Equal(t, "Renamed", got.Page.PageName)
+	assert.Equal(t, "🚀", got.Page.Etc["icon"])
+	assert.Equal(t, "aurora", got.Page.Etc["cover"])
 }

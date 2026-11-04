@@ -112,6 +112,8 @@ type PageUpdateObject struct {
 	ParentPageUUID string `json:"parent_page_uuid,omitempty"`
 	PublicPage     *bool  `json:"public_page"`
 	IsFavourite    *bool  `json:"is_favourite,omitempty"`
+	// Page-level extras such as {"icon": "🚀", "cover": "aurora"}; left unchanged when missing or null
+	Etc pgtype.JSONB `json:"etc,omitempty"`
 }
 
 type ElementsUpdateObject struct {
