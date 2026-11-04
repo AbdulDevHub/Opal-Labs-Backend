@@ -20,9 +20,12 @@ import (
 var DB *gorm.DB
 
 func init() {
-	err := godotenv.Load("../.env")
-	if err != nil {
-		log.Fatal("Error loading .env", err.Error())
+	// CI sets variables directly; locally they come from ../.env
+	if err := godotenv.Load("../.env"); err != nil {
+		log.Println("No ../.env file found, using environment variables")
+	}
+	if os.Getenv("DOMAIN") == "" {
+		os.Setenv("DOMAIN", "http://localhost:8000")
 	}
 	log.Println("Connecting to DB...")
 	dsn := os.Getenv("DATABASE_URL")
@@ -31,9 +34,10 @@ func init() {
 			os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"),
 			os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_SSL_MODE"))
 	}
+	var err error
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{DisableForeignKeyConstraintWhenMigrating: true})
 	if err != nil {
-		return
+		log.Fatal("Failed to connect to the test database: ", err)
 	}
 
 	// Check if user with user_id 0 exists in the users table
@@ -62,9 +66,8 @@ func TestCreatePage(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie := http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
 
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -85,8 +88,7 @@ func TestCreatePage(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie = http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err = client.Do(req)
 	if err != nil {
@@ -110,9 +112,8 @@ func TestCreatePageFail(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie := http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
 
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -138,8 +139,7 @@ func TestGetPage(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie := http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -155,8 +155,7 @@ func TestGetPage(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie = http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err = client.Do(req)
 	if err != nil {
@@ -177,8 +176,7 @@ func TestGetPage(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie = http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err = client.Do(req)
 	if err != nil {
@@ -202,9 +200,8 @@ func TestGetPageFail(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie := http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
 
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -228,8 +225,7 @@ func TestListPageFail(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie := http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -255,8 +251,7 @@ func TestListPage(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie := http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -271,8 +266,7 @@ func TestListPage(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie = http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err = client.Do(req)
 	if err != nil {
@@ -293,8 +287,7 @@ func TestListPage(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie = http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err = client.Do(req)
 	if err != nil {
@@ -322,8 +315,7 @@ func TestUpdatePage(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie := http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -358,8 +350,7 @@ func TestUpdatePage(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie = http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err = client.Do(req)
 	if err != nil {
@@ -380,8 +371,7 @@ func TestUpdatePage(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie = http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err = client.Do(req)
 	if err != nil {
@@ -423,9 +413,8 @@ func TestUpdatePageFail(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie := http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
 
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -451,8 +440,7 @@ func TestDeletePage(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie := http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -469,8 +457,7 @@ func TestDeletePage(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie = http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err = client.Do(req)
 	if err != nil {
@@ -495,8 +482,7 @@ func TestDeletePageFail(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie := http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -518,8 +504,7 @@ func TestUserGet(t *testing.T) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	cookie := http.Cookie{Name: "Authorization", Value: token, HttpOnly: true, Secure: false, Domain: "localhost", Path: "/"}
-	req.AddCookie(&cookie)
+	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err := client.Do(req)
 	if err != nil {

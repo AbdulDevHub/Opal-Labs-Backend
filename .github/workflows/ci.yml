@@ -11,34 +11,60 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    # Throwaway database for the API tests
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: opal
+          POSTGRES_PASSWORD: opal
+          POSTGRES_DB: opal_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U opal"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      APP_ENV: development
+      DATABASE_URL: postgres://opal:opal@localhost:5432/opal_test?sslmode=disable
+      SECRET: ci-only-secret
+      DOMAIN: http://localhost:8000
+      PORT: 8000
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: 1.21.6
 
       - name: Build
-        run: go build 
+        run: go build ./...
 
-      - name: Rename env
-        run: mv .env.example .env
+      - name: Vet
+        run: go vet ./...
 
-      - name: Run
+      - name: Start server
         run: |
-          go run . &
-          echo "Server started"
-
-      - name: Wait
-        run: sleep 3
+          go build -o server .
+          ./server > server.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:8000/health && exit 0
+            sleep 1
+          done
+          cat server.log
+          exit 1
 
       - name: Test
-        run: |
-          cd tests 
-          go test -v
+        run: go test -v ./tests/...
 
-      - name: rename env
-        run: mv .env .env.example
+      - name: Server log
+        if: failure()
+        run: cat server.log || true
