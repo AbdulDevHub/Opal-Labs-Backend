@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-contrib/cors"
@@ -23,7 +24,10 @@ func main() {
 
 	// Use CORS middleware
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{auth.GetFrontendURL()}
+	config.AllowOrigins = auth.GetFrontendURLs()
+	if len(config.AllowOrigins) == 0 {
+		log.Fatal("FRONTEND_URL must be set so the frontend is allowed by CORS")
+	}
 	config.AllowCredentials = true
 	config.AllowHeaders = append(config.AllowHeaders, "Authorization")
 	config.AllowHeaders = append(config.AllowHeaders, "Access-Control-Allow-Origin")

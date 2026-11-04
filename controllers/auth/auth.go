@@ -31,12 +31,21 @@ func GetDomain() string {
 	return os.Getenv("DOMAIN")
 }
 
-// GetFrontendURL returns the URL of the frontend, used for CORS.
-func GetFrontendURL() string {
+// GetFrontendURLs returns the frontend origins allowed by CORS.
+// FRONTEND_URL may hold several comma-separated URLs; spaces and trailing
+// slashes are trimmed because browsers send the origin without them.
+func GetFrontendURLs() []string {
 	if os.Getenv("APP_ENV") == "development" {
-		return "http://localhost:3000"
+		return []string{"http://localhost:3000"}
 	}
-	return os.Getenv("FRONTEND_URL")
+	var origins []string
+	for _, url := range strings.Split(os.Getenv("FRONTEND_URL"), ",") {
+		url = strings.TrimRight(strings.TrimSpace(url), "/")
+		if url != "" {
+			origins = append(origins, url)
+		}
+	}
+	return origins
 }
 
 // GetSecretKey returns the secret key from the environment variables.
