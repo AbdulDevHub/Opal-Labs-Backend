@@ -536,7 +536,8 @@ func TestUpdatePageEtc(t *testing.T) {
 	created := send("POST", "/page-create", `{"page_uuid":"12234PageEtctest","page_name":"PageEtctest","is_root":true,"element_positions":[]}`)
 	created.Body.Close()
 	assert.Equal(t, http.StatusOK, created.StatusCode)
-	defer send("POST", "/page-delete", `{"page_uuid":"12234PageEtctest"}`).Body.Close()
+	// Clean up at the end (a plain defer would send the delete straight away)
+	defer func() { send("POST", "/page-delete", `{"page_uuid":"12234PageEtctest"}`).Body.Close() }()
 
 	resp := send("POST", "/page-update", `{"page":{"page_uuid":"12234PageEtctest","etc":{"icon":"🚀","cover":"aurora"}}}`)
 	resp.Body.Close()
