@@ -54,7 +54,7 @@ SECRET="change-me"
 
 # Production only (ignored when APP_ENV=development)
 DOMAIN="https://your-backend.onrender.com"
-FRONTEND_URL="https://your-frontend.vercel.app"
+FRONTEND_URL="https://your-frontend.vercel.app"  # comma-separate several origins; trailing slashes are ignored
 
 # Neon connection string. When set, the DB_* values are ignored.
 DATABASE_URL="postgresql://user:password@ep-xxxx.region.aws.neon.tech/neondb?sslmode=require"
