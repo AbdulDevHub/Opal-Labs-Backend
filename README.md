@@ -1,15 +1,19 @@
-# 🧠 Opal Labs — Backend
+<div align="center">
 
-Backend services powering the Opal Labs productivity platform.
+# 🧠 Opal Labs: Go REST API for a Notion-Style Notes App (Backend)
 
-<img src="Cover Image.jpg" width="65%" />
+The **Go + Gin + PostgreSQL** REST API behind [Opal Labs](https://opal-labs.vercel.app/), a Notion-like note-taking app: pages, nested subpages, rich elements, publishing, and JWT auth with Google sign-in.
+
+<img src="Cover Image.jpg" alt="Opal Labs backend: Go REST API cover image" width="65%" />
 
 <br />
 
+[🌐 Live Demo](https://opal-labs.vercel.app/) •
 [🖥 Frontend Repository](https://github.com/AbdulDevHub/Opal-Labs-Frontend)
 
 <br />
 
+[![Go CI](https://github.com/AbdulDevHub/Opal-Labs-Backend/actions/workflows/ci.yml/badge.svg)](https://github.com/AbdulDevHub/Opal-Labs-Backend/actions/workflows/ci.yml)
 ![Go](https://img.shields.io/badge/Go-00ADD8?logo=go&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?logo=postgresql&logoColor=white)
 ![Redis](https://img.shields.io/badge/Redis-DC382D?logo=redis&logoColor=white)
@@ -29,11 +33,12 @@ For the frontend implementation, visit 👉 **[Opal Labs Frontend](https://githu
 
 ### 🧱 Backend Tech Stack
 
-- **Language:** Go
-- **Database:** PostgreSQL
-- **Caching:** Redis
-- **Authentication:** Google OAuth 2.0
-- **Testing:** Go testing framework
+- **Language:** Go (Gin web framework, GORM)
+- **Database:** PostgreSQL (Neon)
+- **Caching:** Redis (optional)
+- **Authentication:** Google OAuth 2.0 + JWT bearer tokens
+- **Testing:** Go tests in GitHub Actions against a throwaway Postgres
+- **Hosting:** Render
 - **Methodology:** Agile
 
 ---
