@@ -4,7 +4,7 @@
 
 The **Go + Gin + PostgreSQL** REST API behind [Opal Labs](https://opal-labs.vercel.app/), a Notion-like note-taking app: pages, nested subpages, rich elements, publishing, and JWT auth with Google sign-in.
 
-<img src="Cover Image.jpg" alt="Opal Labs backend: Go REST API cover image" width="65%" />
+<img src=".github/og-image.png" alt="Opal Labs backend: the Go REST API behind the notes app" width="75%" />
 
 <br />
 
@@ -30,6 +30,19 @@ This is a **public copy of a private repository** where I collaborated with a **
 
 This repository contains the **backend** services for the application.  
 For the frontend implementation, visit 👉 **[Opal Labs Frontend](https://github.com/AbdulDevHub/Opal-Labs-Frontend)**
+
+### 🧭 Project Overview
+
+This is the server behind Opal Labs, a Notion-style notes app. The website asks it to create, list, update and delete
+pages; each page holds an ordered list of blocks (text, to-dos, code, embeds and so on) and can contain sub-pages. Saving
+a page sends only what changed in the page itself plus its full list of blocks, and the server works out which blocks to
+add, update or remove.
+
+Users sign in with Google on the website. The website passes the Google tokens to this server, which checks them, creates
+the account on first visit (with a welcome page) and returns a signed token that proves who the user is on every later
+request. Pages can be published: anyone with the link can read a public page, and the server counts views per day so the
+owner can see a chart. It runs on Render with a Postgres database on Neon, and every push is tested against a fresh
+database.
 
 ### 🧱 Backend Tech Stack
 
